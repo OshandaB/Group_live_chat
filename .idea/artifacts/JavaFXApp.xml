@@ -8,7 +8,7 @@
     </properties>
     <root id="root">
       <element id="archive" name="JavaFXApp.jar">
-        <element id="module-output" name="chatting_app" />
+        <element id="module-output" name="Group_live_chat" />
       </element>
     </root>
   </artifact>
