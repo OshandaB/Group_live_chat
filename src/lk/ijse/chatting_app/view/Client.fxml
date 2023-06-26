@@ -4,32 +4,71 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="446.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.chatting_app.controller.ClientController">
+<AnchorPane prefHeight="446.0" prefWidth="687.0" style="-fx-background-color: #202C33;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.chatting_app.controller.ClientController">
    <children>
+      <ImageView fitHeight="446.0" fitWidth="687.0">
+         <image>
+            <Image url="@backg.jpg" />
+         </image>
+      </ImageView>
       <AnchorPane fx:id="msgPane" layoutX="51.0" layoutY="22.0" visible="false">
          <children>
-            <Label fx:id="lblName" layoutX="106.0" prefHeight="41.0" prefWidth="347.0" text="               Label">
+            <Label fx:id="lblName" layoutX="106.0" prefHeight="41.0" prefWidth="347.0" text="               Label" textFill="WHITE">
                <font>
                   <Font size="29.0" />
                </font></Label>
             <TextField fx:id="sendText" layoutX="99.0" layoutY="370.0" prefHeight="24.0" prefWidth="400.0" />
             <Button fx:id="sendOnAction" layoutX="529.0" layoutY="370.0" mnemonicParsing="false" onAction="#sendOnAction" style="-fx-background-color: blue;" text="Send" />
-            <Button layoutX="416.0" layoutY="370.0" mnemonicParsing="false" onAction="#imageOnAction" prefHeight="24.0" prefWidth="65.0" text="Button" />
-            <ScrollPane layoutY="41.0">
+            <ScrollPane layoutY="41.0" prefHeight="285.0" prefWidth="612.0" style="-fx-background-color: #202C33;">
                <content>
-                  <VBox fx:id="imageBox" prefHeight="290.0" prefWidth="613.0" style="-fx-border-color: lime green; -fx-border-width: 5;" />
+                  <VBox fx:id="imageBox" prefHeight="283.0" prefWidth="610.0" style="-fx-background-color: #202C33;" />
+               </content>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </ScrollPane>
+            <ImageView fitHeight="24.0" fitWidth="35.0" layoutX="453.0" layoutY="370.0" onMouseClicked="#imageOnAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons8-compact-camera-50.png" />
+               </image>
+            </ImageView>
+<!--            <ImageView fitHeight="41.0" fitWidth="51.0" layoutX="42.0" layoutY="362.0" onMouseClicked="#emojiSend" pickOnBounds="true" preserveRatio="true">-->
+<!--               <image>-->
+<!--                  <Image url="/lk/ijse/chatting_app/view/icons8-grinning-face-with-big-eyes-48.png" />-->
+<!--               </image>-->
+<!--            </ImageView>-->
+            <ScrollPane fx:id="pane" layoutX="7.0" layoutY="276.0" prefHeight="88.0" prefWidth="154.0" visible="false">
+               <content>
+                  <VBox fx:id="emojiBox" prefHeight="86.0" prefWidth="152.0" style="-fx-background-color: lime green;" />
                </content>
             </ScrollPane>
+            <ImageView fitHeight="24.0" fitWidth="32.0" layoutX="59.0" layoutY="370.0" onMouseClicked="#emojiSend" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons8-grinning-face-with-big-eyes-48.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="logPane" layoutX="157.0" layoutY="265.0">
          <children>
-            <TextField fx:id="userTxt" prefHeight="24.0" prefWidth="356.0" />
+            <TextField fx:id="userTxt" prefHeight="24.0" prefWidth="356.0" style="-fx-background-radius: 10 10 10 10;" />
             <Button layoutX="125.0" layoutY="76.0" mnemonicParsing="false" onAction="#loginOnAction" prefHeight="41.0" prefWidth="124.0" style="-fx-background-color: lime green;" text="Login" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="imgPane" layoutX="250.0" layoutY="70.0">
+         <children>
+            <ImageView fitHeight="201.0" fitWidth="224.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="/lk/ijse/chatting_app/view/icons8-user-100.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </children>

@@ -23,7 +23,7 @@ public class ServerInitializer  {
        System.out.println("HO" + clients);
 
        try {
-           ServerSocket serverSocket = new ServerSocket(5002);
+           ServerSocket serverSocket = new ServerSocket(5003);
            while (true) {
                System.out.println("server Listning");
                socket = serverSocket.accept();
