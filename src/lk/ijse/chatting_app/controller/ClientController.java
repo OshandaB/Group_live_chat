@@ -4,26 +4,26 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 
-import javax.swing.text.Element;
 import java.io.*;
 import java.net.Socket;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -35,6 +35,8 @@ public class ClientController implements Initializable {
     public ScrollPane pane;
     public ImageView imaView;
     public AnchorPane imgPane;
+    public Label labelTime;
+    public Label labelTime1;
     @FXML
     private Label lblName;
 
@@ -67,7 +69,7 @@ public class ClientController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+         Timenow();
         imageBox.setSpacing(10);
         try {
             setEmojis();
@@ -99,6 +101,7 @@ public class ClientController implements Initializable {
                         System.out.println(imagePath);
 
                         Platform.runLater(() -> {
+                            imageBox.setAlignment(Pos.TOP_LEFT);
                             File inputFile = new File(imagePath);
                             Image image = new Image(inputFile.toURI().toString());
                             ImageView imageView = new ImageView(image);
@@ -107,19 +110,21 @@ public class ClientController implements Initializable {
                             HBox hBox = new HBox(10);
                             Text text = new Text(strings[0]+": ");
                             text.setStyle("-fx-font-size: 15px; -fx-fill: white");
-                            hBox.getChildren().add(text);
-                            hBox.setMaxHeight(20);
-                            hBox.setMaxWidth(10);
-                            hBox.setAlignment(Pos.BOTTOM_LEFT);
-                            //VBox imageBox = new VBox();
-                            VBox vBox= new VBox(15);
-                            vBox.setAlignment(Pos.BOTTOM_LEFT);
 
-
-                            // imageBox.setAlignment(Pos.BOTTOM_RIGHT);
-                            imageBox.setAlignment(Pos.TOP_LEFT);
+                            TextFlow textFlow = new TextFlow();
+                            textFlow.getChildren().add(text);
+                            textFlow.setPadding(new Insets(2,10,2,10));
+                            VBox vBox = new VBox();
                             vBox.getChildren().add(imageView);
-                            imageBox.getChildren().addAll(hBox,vBox);
+                            TextFlow textFlow2 = new TextFlow();
+                            textFlow2.getChildren().addAll(textFlow,vBox);
+                            textFlow2.setStyle("-fx-background-color:  black; -fx-background-radius: 0 10 10 10; -fx-font-style: white;");
+                            textFlow2.setPadding(new Insets(2,10,2,10));
+
+                            hBox.getChildren().add(textFlow2);
+                            hBox.setAlignment(Pos.BASELINE_LEFT);
+
+                            imageBox.getChildren().add(hBox);
                         });
 
 
@@ -127,55 +132,59 @@ public class ClientController implements Initializable {
                     else if(strings[1].startsWith("emj")){
                         String emoji = strings[1].substring(3);
                         Platform.runLater(() -> {
-                            HBox hBox = new HBox(10);
+                            imageBox.setAlignment(Pos.TOP_LEFT);
+                            TextFlow textFlow = new TextFlow();
+                            TextFlow textFlow1 = new TextFlow();
+                            TextFlow textFlow2 = new TextFlow();
                             Text text = new Text(strings[0]+": ");
                             text.setStyle("-fx-font-size: 15px; -fx-fill: white");
-                            hBox.getChildren().add(text);
-                            hBox.setMaxHeight(20);
-                            hBox.setMaxWidth(10);
+                            textFlow.getChildren().add(text);
+
 
                             Text emojiText = new Text(emoji);
                             emojiText.setStyle("-fx-font-size: 23px; -fx-fill: #FAD22D; -fx-border-width: 10");
-                            HBox vBox = new HBox(10);
-                            vBox.setAlignment(Pos.BOTTOM_LEFT);
+                            textFlow1.getChildren().add(emojiText);
+                            textFlow2.getChildren().addAll(text,emojiText);
+                            textFlow2.setStyle("-fx-background-color:  black; -fx-background-radius: 0 10 10 10; -fx-font-style: white;");
+                            textFlow2.setPadding(new Insets(2,10,2,10));
 
-                            vBox.getChildren().add(emojiText);
-                            VBox vBox1= new VBox(10);
-                            vBox1.getChildren().addAll(hBox,vBox);
-                            vBox1.setStyle("-fx-background-color:  black; -fx-background-radius: 0 10 10 10; -fx-font-style: white;");
-                            vBox1.setMaxWidth(10);
+                            HBox hBox = new HBox();
+                            hBox.getChildren().add(textFlow2);
+                            hBox.setAlignment(Pos.BASELINE_LEFT);
+//                            vBox1.setStyle("-fx-background-color:  black; -fx-background-radius: 0 10 10 10; -fx-font-style: white;");
+
                             // imageBox.setAlignment(Pos.BOTTOM_RIGHT);
-                            imageBox.setAlignment(Pos.TOP_LEFT);
 
-                            imageBox.getChildren().add(vBox1);
+
+                            imageBox.getChildren().add(hBox);
                         });
                     }
                     else {
 //                        txtArea.appendText("\n "+message);
                         Platform.runLater(() -> {
+                            imageBox.setAlignment(Pos.TOP_LEFT);
                             Text text = new Text("\n " + message);
                             text.setTextAlignment(TextAlignment.LEFT);
-                            text.setStyle("-fx-text-fill: white");
-                            VBox vBox = new VBox(5);
-                            HBox hBox = new HBox();
-                            hBox.getChildren().add(text);
-                            hBox.setStyle("-fx-background-color:  #005C4B ; -fx-font-size: 12px; -fx-fill: white; -fx-border-color: black; -fx-border-width: 1px; -fx-border-radius: 0 0 0 10");
+                            text.setStyle("-fx-fill: white");
+                            TextFlow textFlow = new TextFlow();
+                            textFlow.getChildren().add(text);
+//                            VBox vBox = new VBox(5);
+                            HBox hBox = new HBox(10);
+                            hBox.getChildren().add(textFlow);
+                            textFlow.setStyle("-fx-background-color:  black; -fx-background-radius: 0 10 10 10; -fx-fill: white;");
 
-                            hBox.setPrefWidth(5);
-                            hBox.setPrefHeight(20);
-                            vBox.setPrefHeight(38);
-                            vBox.setPrefWidth(10);
-                            vBox.setMaxHeight(100);
-                            hBox.setAlignment(Pos.BOTTOM_LEFT);
-                            vBox.setAlignment(Pos.BOTTOM_LEFT);
-                            imageBox.setAlignment(Pos.TOP_LEFT);
-                            vBox.getChildren().add(hBox);
-//                            vBox.setStyle("-fx-background-color: white");
-                            vBox.setStyle("-fx-background-color:  #202C33 ; -fx-font-size: 12px; -fx-border-color: #202C33; -fx-border-width: 2px; -fx-border-radius: 2");
+                            textFlow.setPadding(new Insets(2,10,2,10));
 
-                            vBox.setMaxHeight(20);
-                            vBox.setMaxWidth(10);
-                            imageBox.getChildren().add(vBox);
+                            hBox.setAlignment(Pos.BASELINE_LEFT);
+
+                           // imageBox.setAlignment(Pos.TOP_LEFT);
+//                            vBox.getChildren().add(hBox);
+////                            vBox.setStyle("-fx-background-color: white");
+//                            vBox.setStyle("-fx-background-color:  #202C33 ; -fx-font-size: 12px; -fx-border-color: #202C33; -fx-border-width: 2px; -fx-border-radius: 2");
+//
+//                            vBox.setMaxHeight(20);
+//                            vBox.setMaxWidth(10);
+                            imageBox.getChildren().add(hBox);
 //                            imageBox.setStyle("-fx-background-color: grey ; -fx-font-size: 12px; -fx-border-color: black; -fx-border-width: 1px; -fx-border-radius: 10");
 
                         });
@@ -190,23 +199,30 @@ public class ClientController implements Initializable {
 
     }
 
-    public void sendOnAction(ActionEvent actionEvent) throws IOException {
+    public void sendOnAction(MouseEvent actionEvent) throws IOException {
+      //  imageBox.setAlignment(Pos.BOTTOM_RIGHT);
         String msg = sendText.getText();
         String name = lblName.getText();
 //        txtArea.appendText("\nME : "+msg);
         Text text = new Text("\nME : "+msg);
         text.setTextAlignment(TextAlignment.CENTER);
         text.setStyle("-fx-fill: white;");
-        VBox vBox = new VBox(10);
+        TextFlow textFlow = new TextFlow();
+        textFlow.getChildren().add(text);
+        textFlow.setStyle("-fx-background-color:  #005C4B; -fx-background-radius: 10 10 0 10; -fx-font-style: white;");
+        textFlow.setPadding(new Insets(2,10,2,10));
+
+        HBox vBox = new HBox(10);
+//        vBox.setAlignment(Pos.BOTTOM_LEFT);
         vBox.setAlignment(Pos.BOTTOM_RIGHT);
 
-       // imageBox.setAlignment(Pos.BOTTOM_RIGHT);
-        vBox.getChildren().add(text);
-        vBox.setStyle("-fx-background-color:  #005C4B; -fx-background-radius: 0 10 0 0; -fx-font-style: white;");
 
-        vBox.setMaxHeight(20);
-        vBox.setMaxWidth(25);
+        vBox.getChildren().add(textFlow);
+//        vBox.setStyle("-fx-background-color:  #005C4B; -fx-background-radius: 0 10 0 0; -fx-font-style: white;");
+
+
         imageBox.getChildren().add(vBox);
+
 
         dataOutputStream.writeUTF(name);
         dataOutputStream.writeUTF(msg);
@@ -259,39 +275,49 @@ public class ClientController implements Initializable {
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
              filePath = selectedFile.getAbsolutePath();
+            dataOutputStream.writeUTF(lblName.getText());
         }
 
-     dataOutputStream.writeUTF(lblName.getText());
+
         dataOutputStream.writeUTF("image"+ filePath);
-        File inputFile = new File(filePath);
-        Image image = new Image(inputFile.toURI().toString());
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(100);
-        imageView.setFitWidth(100);
-        VBox vBox= new VBox(50);
-    vBox.setAlignment(Pos.BOTTOM_RIGHT);
-
-        vBox.setPrefHeight(38);
-       // imageBox.setAlignment(Pos.BOTTOM_RIGHT);
-       // imageBox.setAlignment(Pos.BOTTOM_LEFT);
-        vBox.getChildren().add(imageView);
-        imageBox.getChildren().add(vBox);
+        try {
 
 
+            File inputFile = new File(filePath);
+            Image image = new Image(inputFile.toURI().toString());
+            ImageView imageView = new ImageView(image);
+            imageView.setFitHeight(100);
+            imageView.setFitWidth(100);
+            TextFlow textFlow = new TextFlow();
+            textFlow.getChildren().add(imageView);
+            textFlow.setStyle("-fx-background-color:  #005C4B; -fx-background-radius: 10 10 0 10");
+            HBox vBox = new HBox(10);
+            vBox.setAlignment(Pos.BOTTOM_RIGHT);
+
+
+            // imageBox.setAlignment(Pos.BOTTOM_RIGHT);
+            // imageBox.setAlignment(Pos.BOTTOM_LEFT);
+            vBox.getChildren().add(textFlow);
+            imageBox.getChildren().add(vBox);
+
+        }catch (Exception e){}
         dataOutputStream.flush();
     }
 
 
     public void setEmojis(){
         List<String> emojiUnicodes = Arrays.asList(
-                "\uD83D\uDE01", // Smiling face emoji
-                "\ud83d\ude08", // Thumbs up emoji
+                "\uD83D\uDE01",
+                "\ud83d\ude08",
                 "\uD83D\uDE0D",
                 "\uD83D\uDE02",
                 "\uD83D\uDE22",
                 "\uD83D\uDE20",
-                "\uD83D\uDD25"// Ghost emoji
-                // Add more emoji unicodes here
+                "\uD83D\uDD25",
+                "\uD83D\uDE07",
+                "\uD83D\uDE21",
+                "\uD83D\uDC4C"
+
         );
 
         VBox vBox = new VBox();
@@ -338,16 +364,20 @@ public class ClientController implements Initializable {
     private void handleEmojiSelection(String unicode) throws IOException {
         Text emojiText = new Text(unicode);
         emojiText.setStyle("-fx-font-size: 25px; -fx-fill: #FAD22D; -fx-border-width: 10");
-        VBox vBox= new VBox(50);
+
+        TextFlow textFlow = new TextFlow();
+        textFlow.getChildren().add(emojiText);
+        textFlow.setStyle("-fx-background-color:  #005C4B; -fx-background-radius: 10 10 0 10");
+        textFlow.setPadding(new Insets(2,10,2,10));
+        HBox vBox= new HBox(10);
         vBox.setAlignment(Pos.BOTTOM_RIGHT);
         dataOutputStream.writeUTF(lblName.getText());
          dataOutputStream.writeUTF("emj"+unicode);
 
-        // imageBox.setAlignment(Pos.BOTTOM_RIGHT);
+        //imageBox.setAlignment(Pos.BASELINE_RIGHT);
         //imageBox.setAlignment(Pos.BOTTOM_LEFT);
-        vBox.getChildren().add(emojiText);
-        vBox.setStyle("-fx-background-color:  #005C4B; -fx-background-radius: 10 10 0 10");
-   vBox.setMaxWidth(20);
+        vBox.getChildren().add(textFlow);
+//        vBox.setStyle("-fx-background-color:  #005C4B; -fx-background-radius: 10 10 0 10");
 
         imageBox.getChildren().add(vBox);
 
@@ -363,5 +393,29 @@ public class ClientController implements Initializable {
     public void emojiExit(MouseEvent mouseEvent) {
         emojiBox.setVisible(false);
         pane.setVisible(false);
+    }
+    private void Timenow(){
+        Thread thread =new Thread(() ->{
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");
+            SimpleDateFormat sdf1 = new SimpleDateFormat("MMMM,  dd, yyyy");
+            while (true){
+                try{
+                    Thread.sleep(1000);
+
+                }catch (Exception e){
+                    System.out.println(e);
+                }
+                final String timenow = sdf.format(new Date());
+                String timenow1 = sdf1.format(new Date());
+
+                Platform.runLater(() ->{
+                    labelTime.setText(timenow);
+                     labelTime.setStyle("-fx-font-size: 25px; -fx-text-fill: white");
+                     labelTime1.setText(timenow1);
+                    labelTime1.setStyle("-fx-font-size: 15px; -fx-text-fill: white");
+                });
+            }
+        });
+        thread.start();
     }
 }
