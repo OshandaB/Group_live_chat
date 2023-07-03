@@ -105,8 +105,9 @@ public class ClientController implements Initializable {
                             File inputFile = new File(imagePath);
                             Image image = new Image(inputFile.toURI().toString());
                             ImageView imageView = new ImageView(image);
-                            imageView.setFitHeight(100);
-                            imageView.setFitWidth(100);
+//                            imageView.setFitHeight(100);
+                            imageView.setFitWidth(200);
+                            imageView.setPreserveRatio(true);
                             HBox hBox = new HBox(10);
                             Text text = new Text(strings[0]+": ");
                             text.setStyle("-fx-font-size: 15px; -fx-fill: white");
@@ -122,7 +123,7 @@ public class ClientController implements Initializable {
                             textFlow2.setPadding(new Insets(2,10,2,10));
 
                             hBox.getChildren().add(textFlow2);
-                            hBox.setAlignment(Pos.BASELINE_LEFT);
+                            hBox.setAlignment(Pos.BOTTOM_LEFT);
 
                             imageBox.getChildren().add(hBox);
                         });
@@ -286,8 +287,9 @@ public class ClientController implements Initializable {
             File inputFile = new File(filePath);
             Image image = new Image(inputFile.toURI().toString());
             ImageView imageView = new ImageView(image);
-            imageView.setFitHeight(100);
-            imageView.setFitWidth(100);
+//            imageView.setFitHeight(100);
+            imageView.setFitWidth(200);
+            imageView.setPreserveRatio(true);
             TextFlow textFlow = new TextFlow();
             textFlow.getChildren().add(imageView);
             textFlow.setStyle("-fx-background-color:  #005C4B; -fx-background-radius: 10 10 0 10");
