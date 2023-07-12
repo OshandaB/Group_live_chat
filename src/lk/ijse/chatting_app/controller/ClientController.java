@@ -14,6 +14,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -32,6 +33,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 public class ClientController implements Initializable {
     public AnchorPane logPane;
@@ -65,13 +67,32 @@ public class ClientController implements Initializable {
 
 
     public void loginOnAction(ActionEvent actionEvent) throws IOException {
+
         String name = userTxt.getText();
-        lblName.setText(name);
-        imgPane.setVisible(false);
-        logPane.setVisible(false);
-        msgPane.setVisible(true);
+        boolean isValidate = validation(name);
+
+        if(isValidate) {
+
+            lblName.setText(name);
+            imgPane.setVisible(false);
+            logPane.setVisible(false);
+            msgPane.setVisible(true);
+        }
+
 
     }
+    boolean validation(String name){
+
+        Pattern idPattern = Pattern.compile("^[A-z\\s]{4,15}$");
+        boolean matches = idPattern.matcher(name).matches();
+        if(matches){
+
+            return true;
+        }else {
+             return false;
+        }
+    }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -114,14 +135,14 @@ public class ClientController implements Initializable {
 //                            imageView.setFitHeight(100);
                             imageView.setFitWidth(200);
                             imageView.setPreserveRatio(true);
-//                            imageView.setOnMouseClicked(event -> {
-//                                // Open the image when clicked
-//                                try {
-//                                    File file = new File(imagePath);
-//                                    Desktop.getDesktop().open(file);
-//                                } catch (IOException e) {
-//                                    e.printStackTrace();    }
-//                            });
+                            imageView.setOnMouseClicked(event -> {
+                                // Open the image when clicked
+                                try {
+                                    File file = new File(imagePath);
+                                    Desktop.getDesktop().open(file);
+                                } catch (IOException e) {
+                                    e.printStackTrace();    }
+                            });
                             HBox hBox = new HBox(10);
                             Text text = new Text(strings[0]+": ");
                             text.setStyle("-fx-font-size: 15px; -fx-fill: white");
@@ -132,11 +153,11 @@ public class ClientController implements Initializable {
                             VBox vBox = new VBox();
                             vBox.getChildren().add(imageView);
                             TextFlow textFlow2 = new TextFlow();
-                            textFlow2.getChildren().addAll(textFlow,vBox);
+                            textFlow2.getChildren().add(vBox);
                             textFlow2.setStyle("-fx-background-color:  black; -fx-background-radius: 0 10 10 10; -fx-font-style: white;");
                             textFlow2.setPadding(new Insets(2,10,2,10));
 
-                            hBox.getChildren().add(textFlow2);
+                            hBox.getChildren().addAll(textFlow,textFlow2);
                             hBox.setAlignment(Pos.BOTTOM_LEFT);
 
                             imageBox.getChildren().add(hBox);
@@ -216,32 +237,34 @@ public class ClientController implements Initializable {
 
     public void sendOnAction(MouseEvent actionEvent) throws IOException {
       //  imageBox.setAlignment(Pos.BOTTOM_RIGHT);
-        String msg = sendText.getText();
-        String name = lblName.getText();
+        if(!sendText.getText().isEmpty()){ String msg = sendText.getText();
+            String name = lblName.getText();
 //        txtArea.appendText("\nME : "+msg);
-        Text text = new Text("\nME : "+msg);
-        text.setTextAlignment(TextAlignment.CENTER);
-        text.setStyle("-fx-fill: white;");
-        TextFlow textFlow = new TextFlow();
-        textFlow.getChildren().add(text);
-        textFlow.setStyle("-fx-background-color:  #005C4B; -fx-background-radius: 10 10 0 10; -fx-font-style: white;");
-        textFlow.setPadding(new Insets(2,10,2,10));
+            Text text = new Text("\nME : "+msg);
+            text.setTextAlignment(TextAlignment.CENTER);
+            text.setStyle("-fx-fill: white;");
+            TextFlow textFlow = new TextFlow();
+            textFlow.getChildren().add(text);
+            textFlow.setStyle("-fx-background-color:  #005C4B; -fx-background-radius: 10 10 0 10; -fx-font-style: white;");
+            textFlow.setPadding(new Insets(2,10,2,10));
 
-        HBox vBox = new HBox(10);
+            HBox vBox = new HBox(10);
 //        vBox.setAlignment(Pos.BOTTOM_LEFT);
-        vBox.setAlignment(Pos.BOTTOM_RIGHT);
+            vBox.setAlignment(Pos.BOTTOM_RIGHT);
 
 
-        vBox.getChildren().add(textFlow);
+            vBox.getChildren().add(textFlow);
 //        vBox.setStyle("-fx-background-color:  #005C4B; -fx-background-radius: 0 10 0 0; -fx-font-style: white;");
 
 
-        imageBox.getChildren().add(vBox);
+            imageBox.getChildren().add(vBox);
 
 
-        dataOutputStream.writeUTF(name);
-        dataOutputStream.writeUTF(msg);
-        dataOutputStream.flush();
+            dataOutputStream.writeUTF(name);
+            dataOutputStream.writeUTF(msg);
+            dataOutputStream.flush();
+            sendText.setText("");}
+
     }
 
 //    public void imageOnAction(ActionEvent actionEvent) throws IOException {
@@ -483,5 +506,17 @@ public class ClientController implements Initializable {
             }
         });
         thread.start();
+    }
+
+    public void txtValiName(KeyEvent keyEvent) {
+        String name = userTxt.getText();
+        boolean isValidate = validation(name);
+
+        if(isValidate) {
+             userTxt.setStyle("-fx-border-color: green");
+
+        }else{
+            userTxt.setStyle("-fx-border-color: red");
+        }
     }
 }
